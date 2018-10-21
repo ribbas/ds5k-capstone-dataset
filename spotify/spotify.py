@@ -3,6 +3,7 @@
 
 from pprint import pprint
 
+from util import *
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
 
@@ -35,12 +36,13 @@ class SpotifyWrapper(object):
 
             else:
                 # self.table.append((album + (None, )))
-                print("No response for:", album)
+                wprint("No response for:", album)
 
     def get_tracklist_uris(self):
 
         tracklists = []
 
+        # increment by MAX_ALBUMS album IDs
         for album_ix in range(0, len(self.table), self.MAX_ALBUMS):
             resp = self.spotify.albums(
                 [
@@ -48,19 +50,17 @@ class SpotifyWrapper(object):
                     self.table[album_ix:album_ix + self.MAX_ALBUMS] if album[2]
                 ]
             )
+            # append all the responses
             tracklists.append(resp)
 
-        print(len(self.table), len(tracklists), len(tracklists[0]["albums"]))
+        # sometimes more than a page is returned
         for resp in tracklists:
             for group_ix in range(len(resp["albums"])):
-                print(self.table[group_ix], ",".join(
-                    tracks["uri"].replace("spotify:track:", '')
-                    for tracks in resp["albums"][group_ix]["tracks"]["items"]
-                ))
                 self.table[group_ix] = (
                     self.table[group_ix] + (",".join(
                         tracks["uri"].replace("spotify:track:", '')
-                        for tracks in resp["albums"][group_ix]["tracks"]["items"]
+                        for tracks in
+                        resp["albums"][group_ix]["tracks"]["items"]
                     ),)
                 )
 
