@@ -6,8 +6,7 @@ from termcolor import cprint
 
 def __arg_fmt(*args):
 
-    s = "{} " * len(args)
-    return s.format(*args)
+    return ("{} " * len(args)).format(*args)
 
 
 def eprint(*io):

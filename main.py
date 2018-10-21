@@ -19,7 +19,7 @@ if __name__ == '__main__':
     spotify_db.create("spotify", SPOTIFY_FIELDS)
 
     sp_obj = SpotifyWrapper(CREDS, pf_data)
-    sp_obj.get_album_uri()
-    sp_obj.get_tracklist_uris()
+    sp_obj.get_albums_uris()
+    sp_obj.get_tracklists_uris()
     spotify_data = sp_obj.get_table()
     spotify_db.insert("spotify", SPOTIFY_FIELDS, spotify_data)

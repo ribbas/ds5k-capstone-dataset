@@ -13,11 +13,11 @@ class DataBase(object):
 
         self.db_path = db_path
         self.con = sqlite3.connect(db_path)
-        sprint("Connected to '{}'".format(db_path))
+        iprint("Connected to '{}'".format(db_path))
 
     def __del__(self):
 
-        sprint("Disconnected from '{}'".format(self.db_path))
+        iprint("Disconnected from '{}'".format(self.db_path))
 
     def create(self, table, fields):
 

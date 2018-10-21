@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pprint import pprint
-
 from util import *
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -12,20 +10,30 @@ class SpotifyWrapper(object):
 
     def __init__(self, client_creds, albums):
 
-        client_creds = SpotifyClientCredentials(*client_creds)
-        self.spotify = Spotify(client_credentials_manager=client_creds)
-        self.spotify.trace = False
+        iprint("Setting up Spotify client")
+        self.sp = Spotify(
+            client_credentials_manager=SpotifyClientCredentials(*client_creds))
+        self.sp.trace = False
+
+        # Sqpotify API endpoint limits
+        self.MAX_ALBUMS = 20
+        self.MAX_AUDIO_FEATS = 100
+        self.MAX_SEARCH = 50
 
         self.albums = albums
         self.table = []
-        self.MAX_ALBUMS = 20
-        self.MAX_AUDIO_FEATS = 100
 
-    def get_album_uri(self):
+    def get_table(self):
 
+        return self.table
+
+    def get_albums_uris(self):
+
+        iprint("Getting album URIs")
         for album_ix, album in enumerate(self.albums):
-            resp = self.spotify.search(
-                q="album:{} artist:{}".format(*album), type="album", limit=10
+            resp = self.sp.search(
+                q="album:{} artist:{}".format(*album), type="album",
+                limit=self.MAX_SEARCH
             )
 
             if resp["albums"]["total"]:
@@ -33,18 +41,19 @@ class SpotifyWrapper(object):
                     (album + (resp["albums"]["items"][0]
                               ["uri"].replace("spotify:album:", ''), ))
                 )
+                sprint("Received response for:", " by ".join(album))
 
             else:
-                # self.table.append((album + (None, )))
-                wprint("No response for:", album)
+                wprint("No response for:", " by ".join(album))
 
-    def get_tracklist_uris(self):
+    def get_tracklists_uris(self):
 
         tracklists = []
 
+        iprint("Getting tracks URIs")
         # increment by MAX_ALBUMS album IDs
         for album_ix in range(0, len(self.table), self.MAX_ALBUMS):
-            resp = self.spotify.albums(
+            resp = self.sp.albums(
                 [
                     album[2] for album in
                     self.table[album_ix:album_ix + self.MAX_ALBUMS] if album[2]
@@ -64,6 +73,6 @@ class SpotifyWrapper(object):
                     ),)
                 )
 
-    def get_table(self):
+    def get_tracks_analysis(self):
 
-        return self.table
+        pass
