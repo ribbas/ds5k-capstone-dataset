@@ -12,7 +12,8 @@ class DataBase(object):
     def __init__(self, db_path):
 
         self.db_path = db_path
-        self.con = sqlite3.connect(db_path)
+        self.con = sqlite3.connect(
+            db_path, detect_types=sqlite3.PARSE_DECLTYPES)
         iprint("Connected to '{}'".format(db_path))
 
     def __del__(self):
@@ -44,7 +45,7 @@ class DataBase(object):
             else:
                 data = self.con.execute("SELECT * FROM {}".format(table))
 
-        return list(data)
+        return data.fetchall()
 
     def insert(self, table, fields, data):
 

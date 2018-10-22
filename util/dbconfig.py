@@ -7,15 +7,15 @@ SPOTIFY_FIELDS = [
     ("artist", "TEXT"),
     ("album_uri", "TEXT"),
     ("tracklist_uri", "TEXT"),
+    ("explicit", "REAL"),
 ]
 
 FEATURE_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
-    ("explicit", "REAL"),
-    ("len_mean", "REAL"),
-    ("len_med", "REAL"),
-    ("len_min", "REAL"),
-    ("len_max", "REAL"),
+    ("duration_mean", "REAL"),
+    ("duration_med", "REAL"),
+    ("duration_min", "REAL"),
+    ("duration_max", "REAL"),
     ("danceability_mean", "REAL"),
     ("danceability_med", "REAL"),
     ("danceability_min", "REAL"),

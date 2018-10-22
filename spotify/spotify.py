@@ -1,9 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from statistics import mean, median
+
 from util import *
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyClientCredentials
+
+FEATS = (
+    "duration_ms",
+    "danceability",
+    "energy",
+    "key",
+    "loudness",
+    "mode",
+    "speechiness",
+    "acousticness",
+    "instrumentalness",
+    "liveness",
+    "valence",
+    "tempo",
+    "time_signature"
+)
 
 
 class SpotifyWrapper(object):
@@ -66,13 +84,41 @@ class SpotifyWrapper(object):
         for resp in tracklists:
             for group_ix in range(len(resp["albums"])):
                 self.table[group_ix] = (
-                    self.table[group_ix] + (",".join(
-                        tracks["uri"].replace("spotify:track:", '')
-                        for tracks in
-                        resp["albums"][group_ix]["tracks"]["items"]
-                    ),)
+                    self.table[group_ix] + (
+                        ",".join(  # comma joined URIs
+                            tracks["uri"].replace("spotify:track:", '')
+                            for tracks in
+                            resp["albums"][group_ix]["tracks"]["items"]
+                        ), mean(  # percentage of explicit tracks
+                            tracks["explicit"] for tracks in
+                            resp["albums"][group_ix]["tracks"]["items"]
+                        )
+                    )
                 )
+
+    def __stats(self, feats):
+
+        stats = []
+        for attr in FEATS:
+            stats.append(mean(resp[attr] for resp in feats))
+            stats.append(median(resp[attr] for resp in feats))
+            stats.append(min(resp[attr] for resp in feats))
+            stats.append(max(resp[attr] for resp in feats))
+
+        return tuple(stats)
 
     def get_tracks_analysis(self):
 
-        pass
+        iprint("Getting audio analysis on tracks")
+        track_uris = ",".join(i[4] for i in self.albums).split(",")
+
+        feats = []
+        for uri_ix in range(0, len(track_uris), self.MAX_AUDIO_FEATS):
+            feats.extend(self.sp.audio_features(
+                track_uris[uri_ix:uri_ix + self.MAX_AUDIO_FEATS]))
+
+        uri_ix = 0
+        for album_ix in range(len(self.albums)):
+            n_albums = self.albums[album_ix][4].count(",") + 1
+            self.table.append(self.__stats(feats[uri_ix:uri_ix + n_albums]))
+            uri_ix += n_albums
