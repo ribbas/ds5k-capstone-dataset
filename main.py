@@ -5,7 +5,7 @@
 from spotify.secret import CREDS
 from spotify.spotify import SpotifyWrapper
 from util.dbmgmt import DataBase
-from util.dbconfig import SPOTIFY_FIELDS, FEATURE_FIELDS
+from util.dbconfig import DB_PATH, SPOTIFY_FIELDS, FEATURE_FIELDS, IND_REVIEW_FIELDS
 
 from spiders.spider import Spider
 from spiders.pitchfork import Pitchfork
@@ -33,8 +33,11 @@ if __name__ == '__main__':
     # sp_obj.get_tracks_analysis()
     # spotify_db.insert("features", FEATURE_FIELDS, sp_obj.get_table())
 
-    obj = Spider(Pitchfork)
+    pitchfork_db = DataBase(DB_PATH)
+    pitchfork_db.create("pitchfork", IND_REVIEW_FIELDS)
+
+    obj = Spider(Pitchfork, pitchfork_db, "pitchfork")
     obj.get_urls()
     obj.get_album_data()
-    pprint(obj.urls)
-    pprint(obj.data)
+
+    # pitchfork_db.insert("pitchfork", pitchfork_data)

@@ -15,6 +15,7 @@ class DataBase(object):
         self.con = sqlite3.connect(
             db_path, detect_types=sqlite3.PARSE_DECLTYPES)
         iprint("Connected to '{}'".format(db_path))
+        self.fields = None
 
     def __del__(self):
 
@@ -32,6 +33,7 @@ class DataBase(object):
                     )
                 )
                 sprint("Create successful")
+                self.fields = fields
 
             except sql_error as e:
                 eprint("DATABASE ERROR OF TYPE {} -> {}".format(type(e), e))
@@ -47,7 +49,10 @@ class DataBase(object):
 
         return data.fetchall()
 
-    def insert(self, table, fields, data):
+    def insert(self, table, data, fields=None):
+
+        if not fields:
+            fields = self.fields
 
         iprint("Inserting into table '{}'".format(table))
         with self.con:

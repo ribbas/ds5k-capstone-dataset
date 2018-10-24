@@ -12,7 +12,10 @@ from util.browserconfig import HEADERS
 
 class Spider(object):
 
-    def __init__(self, review_site):
+    def __init__(self, review_site, db, table):
+
+        self.db = db
+        self.table = table
 
         self.review_site = review_site()
         self.base_url = self.review_site.base_url
@@ -75,14 +78,21 @@ class Spider(object):
                 wprint("Keyboard interrupt...")
                 sprint("Scraped {} pages".format(len(self.data)))
                 iprint("{} pages left".format(len(self.urls)))
+
                 self._dump_mem(self.urls_log, self.urls)
                 iprint("Dumped URLs to '{}'".format(self.urls_log))
+
+                self.db.insert(self.table, self.data)
+
                 sys.exit(0)
 
         sprint("Scraped {} pages".format(len(self.data)))
         iprint("{} pages left".format(len(self.urls)))
+
         self._dump_mem(self.urls_log, self.urls)
         iprint("Dumped URLs to '{}'".format(self.urls_log))
+
+        self.db.insert(self.table, self.data)
 
     def _dump_mem(self, log_file, log_data):
 

@@ -33,16 +33,16 @@ class Pitchfork(object):
 
         data = ()
 
-        for tag in html.find_all("time", {"class": "pub-date"}):
-            data = (date_parser.parse(tag.get("datetime")), )
-            break
-
         for tag in html.find_all("h1", {"class": "single-album-tombstone__review-title"}):
-            data = data + (tag.text, )
+            data = (tag.text, )
             break
 
         for tag in html.find_all("ul", {"class": "artist-links artist-list single-album-tombstone__artist-links"}):
             data = data + (tag.text, )
+            break
+
+        for tag in html.find_all("time", {"class": "pub-date"}):
+            data = data + (date_parser.parse(tag.get("datetime")), )
             break
 
         for tag in html.find_all("span", {"class": "score"}):

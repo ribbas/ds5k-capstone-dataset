@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from os import path
+
+DB_PATH = path.join(path.dirname(
+    path.dirname(path.abspath(__file__))), "db.sqlite3")
+
 SPOTIFY_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
     ("album", "TEXT"),
@@ -73,9 +78,11 @@ REVIEW_FIELDS = [
     ("nme", "REAL"),
 ]
 
-PITCHFORK_FIELDS = ROLLING_STONES_FIELDS = NME_FIELDS = [
+IND_REVIEW_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
     ("album", "TEXT"),
     ("artist", "TEXT"),
+    ("time", "TIMESTAMP"),
     ("score", "REAL"),
+    ("reviewer", "TEXT"),
 ]
