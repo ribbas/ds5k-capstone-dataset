@@ -83,6 +83,7 @@ IND_REVIEW_FIELDS = [
     ("album", "TEXT"),
     ("artist", "TEXT"),
     ("time", "TIMESTAMP"),
+    ("genre", "TEXT"),
     ("score", "REAL"),
     ("reviewer", "TEXT"),
 ]

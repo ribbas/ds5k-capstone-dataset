@@ -36,8 +36,6 @@ if __name__ == '__main__':
     pitchfork_db = DataBase(DB_PATH)
     pitchfork_db.create("pitchfork", IND_REVIEW_FIELDS)
 
-    obj = Spider(Pitchfork, pitchfork_db, "pitchfork")
+    obj = Spider(Pitchfork(), pitchfork_db, "pitchfork")
     obj.get_urls()
     obj.get_album_data()
-
-    # pitchfork_db.insert("pitchfork", pitchfork_data)
