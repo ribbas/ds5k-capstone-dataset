@@ -8,7 +8,8 @@ from util.dbmgmt import DataBase
 from util.dbconfig import DB_PATH, SPOTIFY_FIELDS, FEATURE_FIELDS, IND_REVIEW_FIELDS
 
 from spiders.spider import Spider
-from spiders.pitchfork import Pitchfork
+from spiders.pitchfork import PitchFork
+from spiders.metacritic import Metacritic
 
 from pprint import pprint
 
@@ -33,9 +34,8 @@ if __name__ == '__main__':
     # sp_obj.get_tracks_analysis()
     # spotify_db.insert("features", FEATURE_FIELDS, sp_obj.get_table())
 
-    pitchfork_db = DataBase(DB_PATH)
-    pitchfork_db.create("pitchfork", IND_REVIEW_FIELDS)
+    metacritic_db = DataBase(DB_PATH)
+    metacritic_db.create("metacritic", IND_REVIEW_FIELDS)
 
-    obj = Spider(Pitchfork(), pitchfork_db, "pitchfork")
-    obj.get_urls()
+    obj = Spider(Metacritic(), metacritic_db, "metacritic")
     obj.get_album_data()

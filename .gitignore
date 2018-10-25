@@ -2,5 +2,5 @@
 *.pyc
 __pycache__/
 secret.py
-test.json
+test.*
 logs/

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from itertools import islice, chain
 import os
 import random
 import threading
@@ -11,9 +12,6 @@ import requests
 
 from util import *
 from util.browserconfig import HEADERS
-
-
-from itertools import islice, chain
 
 
 def window(seq, n=2):
@@ -51,12 +49,15 @@ class Spider(object):
         self.scrape_urls = self.review_site.scrape_urls
         self.scrape_album_data = self.review_site.scrape_album_data
         self.urls = self.review_site.urls
-        self.data = []
+        self.urls = ["31", "32", "33", "34", "35", "36", "37", "62", "63", "64", "65",
+                     "66", "67", "68", "69", "70", "73", "74", "75", "76", "77", "78", "79", "80", "81"]
+        self.index_only = self.review_site.index_only
 
-        self.n_threads = os.cpu_count() * 40
+        self.n_threads = os.cpu_count() * 4
+        self.threads = []
 
         self.pages_scraped = set()
-        self.threads = []
+        self.data = []
 
         print("Initialize spider for '{}'".format(
             type(self.review_site).__name__))
@@ -111,14 +112,25 @@ class Spider(object):
 
             iprint("{}: {} pages left".format(thread_name, len(urls)))
             page_url = urls.pop()
+            iprint("{}: Scraping '/{}/'".format(thread_name, page_url))
             time.sleep(random.uniform(1.0, 3.0))
-            page = requests.get(self.base_url + page_url, HEADERS).text
-            soup = BeautifulSoup(page, "html.parser")
-            self.data.append(self.scrape_album_data(soup))
+            sesh = requests.Session()
+            try:
+                page = sesh.get(self.base_url + page_url, headers=HEADERS).text
+                soup = BeautifulSoup(page, "html.parser")
+                if self.index_only:
+                    self.data.extend(self.scrape_album_data(soup))
+                    self.pages_scraped.add(page_url)
+                else:
+                    self.data.append(self.scrape_album_data(soup))
+            except Exception as e:
+                eprint("ERROR IN THREAD {}: {}".format(thread_name, e))
+                break
 
     def get_album_data(self):
 
         urls = self.split_list(self.urls)
+        print(urls)
 
         for data_ix in range(len(urls)):
             t = threading.Thread(
@@ -134,6 +146,7 @@ class Spider(object):
         iprint("{} pages left".format(len(self.urls)))
 
         self._dump_mem(self.urls_log, self.urls)
+        self._dump_mem(self.range_log, sorted(self.pages_scraped), False)
         iprint("Dumped URLs to '{}'".format(self.urls_log))
 
         self.db.insert(self.table, self.data)

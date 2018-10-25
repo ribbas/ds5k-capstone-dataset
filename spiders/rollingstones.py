@@ -6,12 +6,12 @@ from dateutil import parser as date_parser
 from util import logs
 
 
-class PitchFork(object):
+class RollingStones(object):
 
     def __init__(self):
 
-        self.base_url = "https://pitchfork.com/"
-        self.index_endp = "reviews/albums/?page={}"
+        self.base_url = "https://www.rollingstone.com/music/music-album-reviews/"
+        self.index_endp = "page/{}/"
         self.range_log = logs.PITCHFORK_RANGE
         self.urls_log = logs.PITCHFORK_URLS
         self.pages_range = []
