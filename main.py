@@ -9,7 +9,6 @@ from util.dbconfig import DB_PATH, SPOTIFY_FIELDS, FEATURE_FIELDS, IND_REVIEW_FI
 
 from spiders.spider import Spider
 from spiders.allmusic import AllMusic
-from spiders.metacritic import Metacritic
 
 from dateutil import parser as date_parser
 from pprint import pprint

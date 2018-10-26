@@ -24,8 +24,8 @@ class AllMusic(object):
 
         self.pages_range = []
         self.urls = []
-        start_date = datetime(2005, 1, 1)
-        end_date = datetime(2008, 12, 31)
+        start_date = datetime(2009, 1, 1)
+        end_date = datetime(2012, 12, 31)
         rr = rrule.rrule(rrule.WEEKLY, byweekday=relativedelta.FR,
                          dtstart=start_date)
         x = rr.between(start_date, end_date, True)
@@ -37,7 +37,7 @@ class AllMusic(object):
             if line == "init\n":
                 self.urls = all_fridays
             else:
-                line = log_file.readline().split()
+                line = line.split()
                 self.urls = [i for i in all_fridays if i not in line]
 
     def scrape_urls(self, html):
