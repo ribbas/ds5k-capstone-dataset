@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import datetime
+# import datetime
 from dateutil import parser as date_parser
 import dateutil.relativedelta as relativedelta
 import dateutil.rrule as rrule
@@ -24,10 +24,11 @@ class AllMusic(object):
 
         self.pages_range = []
         self.urls = []
+        start_date = datetime(2000, 10, 19)
+        end_date = datetime(2001, 12, 31)
         rr = rrule.rrule(rrule.WEEKLY, byweekday=relativedelta.FR,
-                         dtstart=datetime.datetime(1999, 1, 1))
-        x = rr.between(datetime.datetime(1999, 1, 1),
-                       datetime.datetime(1999, 1, 1), True)
+                         dtstart=start_date)
+        x = rr.between(start_date, end_date, True)
         all_fridays = [
             str(i.year) + str(i.month).zfill(2) + str(i.day).zfill(2)
             for i in x]
@@ -96,5 +97,8 @@ class AllMusic(object):
         for album, artist, genre, score in zip(albums, artists, genres, scores):
             if score:
                 data.append((album, artist, time, genre, score, None))
+
+        if len(data) < 10:
+            wprint("Very low data count in URL: '/{}/'".format(time))
 
         return data

@@ -51,7 +51,7 @@ class Spider(object):
         self.urls = self.review_site.urls
         self.index_only = self.review_site.index_only
 
-        self.n_threads = os.cpu_count() * 40
+        self.n_threads = os.cpu_count() * 10
         # self.n_threads = 1
         self.threads = []
 
