@@ -118,7 +118,7 @@ class Spider(object):
                 page = sesh.get(self.base_url + page_url, headers=HEADERS).text
                 soup = BeautifulSoup(page, "html.parser")
                 if self.index_only:
-                    self.data.extend(self.scrape_album_data("soup"))
+                    self.data.extend(self.scrape_album_data(soup))
                     self.pages_scraped.add(page_url)
                 else:
                     self.data.append(self.scrape_album_data(soup))
