@@ -6,8 +6,8 @@ from dateutil import parser as date_parser
 import dateutil.relativedelta as relativedelta
 import dateutil.rrule as rrule
 
-from util import logs
 from util import *
+from util import logs
 
 
 class AllMusic(object):
@@ -24,8 +24,8 @@ class AllMusic(object):
 
         self.pages_range = []
         self.urls = []
-        start_date = datetime(2000, 10, 19)
-        end_date = datetime(2001, 12, 31)
+        start_date = datetime(2005, 1, 1)
+        end_date = datetime(2008, 12, 31)
         rr = rrule.rrule(rrule.WEEKLY, byweekday=relativedelta.FR,
                          dtstart=start_date)
         x = rr.between(start_date, end_date, True)

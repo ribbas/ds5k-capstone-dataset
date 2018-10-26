@@ -109,9 +109,9 @@ class Spider(object):
         thread_name = threading.current_thread().name
         while urls:
 
-            iprint("{}: {} pages left".format(thread_name, len(urls)))
             page_url = urls.pop()
-            iprint("{}: Scraping '/{}/'".format(thread_name, page_url))
+            iprint("{}: Scraping '/{}/' {} pages left".format(
+                thread_name, page_url, len(urls) + 1))
             time.sleep(random.uniform(1.0, 3.0))
             sesh = requests.Session()
             try:

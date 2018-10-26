@@ -8,24 +8,25 @@ from termcolor import cprint
 
 def __arg_fmt(*args):
 
-    return ("{} {} " * len(args)).format(datetime.now().strftime('%H:%M:%S'), *args)
+    return ("{} | {} " * len(args)).format(
+        datetime.now().strftime('%H:%M:%S'), *args)
 
 
-def eprint(*io):
+def eprint(*ostream):
 
-    cprint(__arg_fmt(*io), "red")
-
-
-def wprint(*io):
-
-    cprint(__arg_fmt(*io), "yellow")
+    cprint(__arg_fmt(*ostream), "red")
 
 
-def sprint(*io):
+def wprint(*ostream):
 
-    cprint(__arg_fmt(*io), "green")
+    cprint(__arg_fmt(*ostream), "yellow")
 
 
-def iprint(*io):
+def sprint(*ostream):
 
-    cprint(__arg_fmt(*io), "blue")
+    cprint(__arg_fmt(*ostream), "green")
+
+
+def iprint(*ostream):
+
+    cprint(__arg_fmt(*ostream), "blue")
