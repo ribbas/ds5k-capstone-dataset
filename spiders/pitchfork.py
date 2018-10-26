@@ -14,6 +14,7 @@ class PitchFork(object):
         self.index_endp = "reviews/albums/?page={}"
         self.range_log = logs.PITCHFORK_RANGE
         self.urls_log = logs.PITCHFORK_URLS
+        self.index_only = False
         self.pages_range = []
         with open(self.range_log) as log_file:
             line = log_file.readline()
@@ -40,6 +41,7 @@ class PitchFork(object):
         data = ()
 
         found = 0
+        # album
         for tag in html.find_all("h1", {"class": "single-album-tombstone__review-title"}):
             data = (tag.text, )
             found = 1
@@ -48,6 +50,7 @@ class PitchFork(object):
             data = (None,)
         found = 0
 
+        # artist
         for tag in html.find_all("ul", {"class": "artist-links artist-list single-album-tombstone__artist-links"}):
             data = data + (tag.text, )
             found = 1
@@ -56,6 +59,7 @@ class PitchFork(object):
             data = data + (None,)
         found = 0
 
+        # timestamp
         for tag in html.find_all("time", {"class": "pub-date"}):
             data = data + (date_parser.parse(tag.get("datetime")), )
             found = 1
@@ -64,6 +68,7 @@ class PitchFork(object):
             data = data + (None,)
         found = 0
 
+        # genre
         for tag in html.find_all("a", {"class": "genre-list__link"}):
             data = data + (tag.text, )
             found = 1
@@ -72,6 +77,7 @@ class PitchFork(object):
             data = data + (None,)
         found = 0
 
+        # score
         for tag in html.find_all("span", {"class": "score"}):
             data = data + (tag.text, )
             found = 1
@@ -80,6 +86,7 @@ class PitchFork(object):
             data = data + (None,)
         found = 0
 
+        # reviewer
         for tag in html.find_all("a", {"class": "authors-detail__display-name"}):
             data = data + (tag.text, )
             found = 1

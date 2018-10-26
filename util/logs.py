@@ -10,3 +10,6 @@ PITCHFORK_URLS = path.join(LOGS_DIR, "pf.urls")
 
 METACRITIC_RANGE = path.join(LOGS_DIR, "mc.range")
 METACRITIC_URLS = path.join(LOGS_DIR, "mc.urls")
+
+ALLMUSIC_RANGE = path.join(LOGS_DIR, "rs.range")
+ALLMUSIC_URLS = path.join(LOGS_DIR, "rs.urls")

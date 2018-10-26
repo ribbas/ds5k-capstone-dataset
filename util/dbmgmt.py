@@ -9,11 +9,11 @@ from . import *
 
 class DataBase(object):
 
-    def __init__(self, db_path):
+    def __init__(self, db_path, detect_types=True):
 
         self.db_path = db_path
         self.con = sqlite3.connect(
-            db_path, detect_types=sqlite3.PARSE_DECLTYPES)
+            db_path, detect_types=detect_types)
         iprint("Connected to '{}'".format(db_path))
         self.fields = None
 

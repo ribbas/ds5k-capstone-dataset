@@ -33,8 +33,7 @@ class Metacritic(object):
 
     def scrape_urls(self, html):
 
-        for tag in html.find_all("a", {"class": "review__link"}):
-            self.urls.append(tag.get("href"))
+        pass
 
     def scrape_album_data(self, html):
 
@@ -45,19 +44,20 @@ class Metacritic(object):
         times = []
         data = []
 
+        # album
         for tag in html.find_all("h3", {"class": "product_title"}):
             albums.append(tag.find("a").text)
 
+        # artist
         for tag in html.find_all("span", {"class": "product_artist"}):
             artists.append(tag.text.replace(" - ", ""))
 
-        for tag in html.find_all("span", {"class": "metascore_w"}):
-            scores.append(tag.text)
-
         for tag in html.find_all("ul", {"class": "more_stats"}):
+            # time
             time_tag = tag.find("li", {"class": "release_date"})
             times.append(date_parser.parse(
                 time_tag.find("span", {"class": "data"}).text))
+            # genre
             genre_tag = tag.find("li", {"class": "stat genre"})
             if genre_tag:
                 genres.append(
@@ -67,10 +67,14 @@ class Metacritic(object):
             else:
                 genres.append(None)
 
+        # score
+        for tag in html.find_all("span", {"class": "metascore_w"}):
+            scores.append(tag.text)
+
         len_fields = {len(albums), len(artists), len(
-            genres), len(scores), len(times)}
+            times), len(genres), len(scores)}
         if len(len_fields) == 1:
-            for fields in zip(albums, artists, genres, scores, times):
+            for fields in zip(albums, artists, times, genres, scores):
                 data.append(fields + (None,))
         elif 0 in len_fields:
             eprint("EMPTY FIELDS")

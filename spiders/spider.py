@@ -49,18 +49,17 @@ class Spider(object):
         self.scrape_urls = self.review_site.scrape_urls
         self.scrape_album_data = self.review_site.scrape_album_data
         self.urls = self.review_site.urls
-        self.urls = ["31", "32", "33", "34", "35", "36", "37", "62", "63", "64", "65",
-                     "66", "67", "68", "69", "70", "73", "74", "75", "76", "77", "78", "79", "80", "81"]
         self.index_only = self.review_site.index_only
 
-        self.n_threads = os.cpu_count() * 4
+        self.n_threads = os.cpu_count() * 40
+        # self.n_threads = 1
         self.threads = []
 
         self.pages_scraped = set()
         self.data = []
 
-        print("Initialize spider for '{}'".format(
-            type(self.review_site).__name__))
+        print("Initialized spider for '{}' with {} threads (max)".format(
+            type(self.review_site).__name__, self.n_threads))
 
     def split_list(self, seq):
         length = len(seq)
@@ -119,18 +118,18 @@ class Spider(object):
                 page = sesh.get(self.base_url + page_url, headers=HEADERS).text
                 soup = BeautifulSoup(page, "html.parser")
                 if self.index_only:
-                    self.data.extend(self.scrape_album_data(soup))
+                    self.data.extend(self.scrape_album_data("soup"))
                     self.pages_scraped.add(page_url)
                 else:
                     self.data.append(self.scrape_album_data(soup))
             except Exception as e:
-                eprint("ERROR IN THREAD {}: {}".format(thread_name, e))
+                eprint("ERROR IN THREAD {} -> {}: {}".format(
+                    thread_name, type(e), e))
                 break
 
     def get_album_data(self):
 
         urls = self.split_list(self.urls)
-        print(urls)
 
         for data_ix in range(len(urls)):
             t = threading.Thread(
@@ -146,7 +145,6 @@ class Spider(object):
         iprint("{} pages left".format(len(self.urls)))
 
         self._dump_mem(self.urls_log, self.urls)
-        self._dump_mem(self.range_log, sorted(self.pages_scraped), False)
         iprint("Dumped URLs to '{}'".format(self.urls_log))
 
         self.db.insert(self.table, self.data)
@@ -157,5 +155,4 @@ class Spider(object):
             if urls:
                 log_fp.write("\n".join(log_data))
             else:
-                log_fp.write("resume")
                 log_fp.write(" ".join(log_data))
