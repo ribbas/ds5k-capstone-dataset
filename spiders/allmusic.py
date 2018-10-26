@@ -24,8 +24,8 @@ class AllMusic(object):
 
         self.pages_range = []
         self.urls = []
-        start_date = datetime(2012, 1, 1)
-        end_date = datetime(2015, 12, 31)
+        start_date = datetime(2016, 1, 1)
+        end_date = datetime(2018, 10, 26)
         rr = rrule.rrule(rrule.WEEKLY, byweekday=relativedelta.FR,
                          dtstart=start_date)
         x = rr.between(start_date, end_date, True)
