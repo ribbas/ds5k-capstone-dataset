@@ -36,7 +36,10 @@ class DataBase(object):
                 self.fields = fields
 
             except sql_error as e:
-                eprint("DATABASE ERROR OF TYPE {} -> {}".format(type(e), e))
+                eprint(
+                    "DATABASE ERROR OF TYPE {} -> {}".format(
+                        e.__class__.__name__, e)
+                )
 
     def dump(self, table, limit=None):
 
@@ -66,7 +69,10 @@ class DataBase(object):
                 sprint("Insert successful")
                 self.count(table)
             except sql_error as e:
-                eprint("DATABASE ERROR OF TYPE {} -> {}".format(type(e), e))
+                eprint(
+                    "DATABASE ERROR OF TYPE {} -> {}".format(
+                        e.__class__.__name__, e)
+                )
 
     def count(self, table, cond=None):
 
@@ -76,4 +82,7 @@ class DataBase(object):
                     "SELECT COUNT(*) FROM {}".format(table)).fetchone()
                 iprint("Row count of table '{}': {}".format(table, cur[0]))
             except sql_error as e:
-                eprint("DATABASE ERROR OF TYPE {} -> {}".format(type(e), e))
+                eprint(
+                    "DATABASE ERROR OF TYPE {} -> {}".format(
+                        e.__class__.__name__, e)
+                )
