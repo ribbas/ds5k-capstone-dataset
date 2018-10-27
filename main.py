@@ -17,7 +17,7 @@ from spotify.secret import CREDS
 from spotify.spotify import SpotifyWrapper
 from util.dbmgmt import DataBase
 from util.dbconfig import DB_PATH, SPOTIFY_FIELDS, FEATURE_FIELDS, IND_REVIEW_FIELDS
-from util.parsers import normalize_scores, get_earliest_date
+from util.parsers import normalize_scores, get_earliest_date, get_genres
 
 from pprint import pprint
 
@@ -63,12 +63,12 @@ if __name__ == '__main__':
     join_col = "album"
     db = merge_db.join(tables=tables, cond=cond,
                        join_col=join_col, fields=fields)
-    t = db.fetchone()
-    t = db.fetchone()
-    t = db.fetchone()
-    t = db.fetchone()
-    t = db.fetchone()
+    t = db.fetchall()
+    for row in t:
+        g = get_genres(row[2:5])
 
-    print(t)
-    print(normalize_scores(np.array(t[8:11]), np.array([5, 100, 10])))
-    print(get_earliest_date(t[5:8]))
+    # print(t)
+    # print(t[2:5])
+    # print(get_genres(t[2:5]))
+    # print(normalize_scores(np.array(t[8:11]), np.array([5, 100, 10])))
+    # print(get_earliest_date(t[5:8]))

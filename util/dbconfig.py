@@ -12,7 +12,7 @@ SPOTIFY_FIELDS = [
     ("artist", "TEXT"),
     ("album_uri", "TEXT"),
     ("tracklist_uri", "TEXT"),
-    ("explicit", "REAL"),
+    ("explicit", "INTEGER"),
 ]
 
 FEATURE_FIELDS = [
@@ -73,17 +73,31 @@ FEATURE_FIELDS = [
 
 REVIEW_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
+    ("album", "TEXT"),
+    ("artist", "TEXT"),
     ("allmusic", "REAL"),
     ("metacritic", "REAL"),
     ("pitchfork", "REAL"),
     ("score_mean", "REAL"),
     ("score_std", "REAL"),
     ("time", "TIMESTAMP"),
-    ("genres", "TIMESTAMP"),
+    ("reviewers", "TEXT"),
 ]
+
 
 GENRE_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
+    ("country", "INTEGER"),
+    ("classical", "INTEGER"),
+    ("electronic", "INTEGER"),
+    ("experimental", "INTEGER"),
+    ("folk", "INTEGER"),
+    ("hip-hop", "INTEGER"),
+    ("international", "INTEGER"),
+    ("jazz", "INTEGER"),
+    ("metal", "INTEGER"),
+    ("pop", "INTEGER"),
+    ("rock", "INTEGER"),
 ]
 
 IND_REVIEW_FIELDS = [
