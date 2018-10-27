@@ -12,8 +12,7 @@ class DataBase(object):
     def __init__(self, db_path, detect_types=True):
 
         self.db_path = db_path
-        self.con = sqlite3.connect(
-            db_path, detect_types=detect_types)
+        self.con = sqlite3.connect(db_path, detect_types=detect_types)
         iprint("Connected to '{}'".format(db_path))
         self.fields = None
 
@@ -81,6 +80,29 @@ class DataBase(object):
                 cur = self.con.execute(
                     "SELECT COUNT(*) FROM {}".format(table)).fetchone()
                 iprint("Row count of table '{}': {}".format(table, cur[0]))
+            except sql_error as e:
+                eprint(
+                    "DATABASE ERROR OF TYPE {} -> {}".format(
+                        e.__class__.__name__, e)
+                )
+
+    def join(self, tables, cond, join_col, kind="INNER", fields=[]):
+
+        with self.con:
+            joins = (
+                "{kind} JOIN {sub} ON {main}.{col} = {sub}.{col} ".format(
+                    kind=kind, main=tables[0], sub=t, col=join_col)
+                for t in tables[1:]
+            )
+            q = "SELECT {fields} FROM {main} {joins}WHERE ({cond})".format(
+                fields=", ".join(fields),
+                main=tables[0],
+                joins="".join(joins),
+                cond=cond
+            )
+            try:
+                return self.con.execute(q)
+
             except sql_error as e:
                 eprint(
                     "DATABASE ERROR OF TYPE {} -> {}".format(

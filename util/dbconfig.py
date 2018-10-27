@@ -73,9 +73,9 @@ FEATURE_FIELDS = [
 
 REVIEW_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
+    ("allmusic", "REAL"),
     ("pitchfork", "REAL"),
     ("rolling_stones", "REAL"),
-    ("nme", "REAL"),
 ]
 
 IND_REVIEW_FIELDS = [

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from statistics import mean, median
+import numpy as np
 
 from util import *
 from spotipy import Spotify
@@ -100,10 +100,10 @@ class SpotifyWrapper(object):
 
         stats = []
         for attr in FEATS:
-            stats.append(mean(resp[attr] for resp in feats))
-            stats.append(median(resp[attr] for resp in feats))
-            stats.append(min(resp[attr] for resp in feats))
-            stats.append(max(resp[attr] for resp in feats))
+            stats.append(np.mean(resp[attr] for resp in feats))
+            stats.append(np.median(resp[attr] for resp in feats))
+            stats.append(np.min(resp[attr] for resp in feats))
+            stats.append(np.max(resp[attr] for resp in feats))
 
         return tuple(stats)
 
