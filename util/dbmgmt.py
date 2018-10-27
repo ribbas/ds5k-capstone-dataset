@@ -86,20 +86,9 @@ class DataBase(object):
                         e.__class__.__name__, e)
                 )
 
-    def join(self, tables, cond, join_col, kind="INNER", fields=[]):
+    def query(self, q):
 
         with self.con:
-            joins = (
-                "{kind} JOIN {sub} ON {main}.{col} = {sub}.{col} ".format(
-                    kind=kind, main=tables[0], sub=t, col=join_col)
-                for t in tables[1:]
-            )
-            q = "SELECT {fields} FROM {main} {joins}WHERE ({cond})".format(
-                fields=", ".join(fields),
-                main=tables[0],
-                joins="".join(joins),
-                cond=cond
-            )
             try:
                 return self.con.execute(q)
 

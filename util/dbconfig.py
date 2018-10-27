@@ -4,7 +4,7 @@
 from os import path
 
 DB_PATH = path.join(path.dirname(
-    path.dirname(path.abspath(__file__))), "db.sqlite3")
+    path.dirname(path.abspath(__file__))), "data/db.sqlite3")
 
 SPOTIFY_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
@@ -75,12 +75,12 @@ REVIEW_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
     ("album", "TEXT"),
     ("artist", "TEXT"),
+    ("time", "TIMESTAMP"),
     ("allmusic", "REAL"),
     ("metacritic", "REAL"),
     ("pitchfork", "REAL"),
     ("score_mean", "REAL"),
     ("score_std", "REAL"),
-    ("time", "TIMESTAMP"),
     ("reviewers", "TEXT"),
 ]
 
@@ -92,7 +92,7 @@ GENRE_FIELDS = [
     ("electronic", "INTEGER"),
     ("experimental", "INTEGER"),
     ("folk", "INTEGER"),
-    ("hip-hop", "INTEGER"),
+    ("hiphop", "INTEGER"),
     ("international", "INTEGER"),
     ("jazz", "INTEGER"),
     ("metal", "INTEGER"),

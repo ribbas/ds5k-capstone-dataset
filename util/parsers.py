@@ -11,7 +11,7 @@ from .genreconfig import *
 
 def normalize_scores(actuals, maxes):
 
-    scores = (actuals / maxes) * 100
+    scores = (np.array(actuals) / np.array(maxes)) * 100
     return (*scores, np.mean(scores), np.std(scores))
 
 
@@ -54,7 +54,7 @@ def get_genres(genres):
                 genres_vec[GENRES.index("folk")] = 1
 
             if genre in HIPHOP or "rap" in genre or "hip-hop" in genre:
-                genres_vec[GENRES.index("hip-hop")] = 1
+                genres_vec[GENRES.index("hiphop")] = 1
 
             if genre in INTERNATIONAL or "international" in genre:
                 genres_vec[GENRES.index("international")] = 1
@@ -72,3 +72,8 @@ def get_genres(genres):
                 genres_vec[GENRES.index("rock")] = 1
 
     return genres_vec
+
+
+def get_reviewers(reviewers):
+
+    return ", ".join(filter(None, reviewers))

@@ -7,7 +7,7 @@ GENRES = [
     "electronic",
     "experimental",
     "folk",
-    "hip-hop",
+    "hiphop",
     "international",
     "jazz",
     "metal",
