@@ -74,8 +74,16 @@ FEATURE_FIELDS = [
 REVIEW_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
     ("allmusic", "REAL"),
+    ("metacritic", "REAL"),
     ("pitchfork", "REAL"),
-    ("rolling_stones", "REAL"),
+    ("score_mean", "REAL"),
+    ("score_std", "REAL"),
+    ("time", "TIMESTAMP"),
+    ("genres", "TIMESTAMP"),
+]
+
+GENRE_FIELDS = [
+    ("album_id", "INTEGER PRIMARY KEY"),
 ]
 
 IND_REVIEW_FIELDS = [
