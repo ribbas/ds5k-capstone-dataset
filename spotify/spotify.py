@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from pprint import pprint
+
 import numpy as np
 
 from util import *
@@ -40,6 +42,7 @@ class SpotifyWrapper(object):
 
         self.albums = albums
         self.table = []
+        self.data = []
 
     def get_table(self):
 
@@ -50,7 +53,7 @@ class SpotifyWrapper(object):
         iprint("Getting album URIs")
         for album_ix, album in enumerate(self.albums):
             resp = self.sp.search(
-                q="album:{} artist:{}".format(*album), type="album",
+                q="album:{} artist:{}".format(*album[1:3]), type="album",
                 limit=self.MAX_SEARCH
             )
 
@@ -59,10 +62,11 @@ class SpotifyWrapper(object):
                     (album + (resp["albums"]["items"][0]
                               ["uri"].replace("spotify:album:", ''), ))
                 )
-                sprint("Received response for:", " by ".join(album))
+                sprint("Received response for:", " by ".join(album[1:3]))
 
             else:
-                wprint("No response for:", " by ".join(album))
+                self.table.append((album + (None, )))
+                wprint("No response for:", " by ".join(album[1:3]))
 
     def get_tracklists_uris(self):
 
@@ -73,8 +77,8 @@ class SpotifyWrapper(object):
         for album_ix in range(0, len(self.table), self.MAX_ALBUMS):
             resp = self.sp.albums(
                 [
-                    album[2] for album in
-                    self.table[album_ix:album_ix + self.MAX_ALBUMS] if album[2]
+                    str(album[-1]) for album in
+                    self.table[album_ix:album_ix + self.MAX_ALBUMS]
                 ]
             )
             # append all the responses
@@ -83,34 +87,42 @@ class SpotifyWrapper(object):
         # sometimes more than a page is returned
         for resp in tracklists:
             for group_ix in range(len(resp["albums"])):
-                self.table[group_ix] = (
-                    self.table[group_ix] + (
-                        ",".join(  # comma joined URIs
-                            tracks["uri"].replace("spotify:track:", '')
-                            for tracks in
-                            resp["albums"][group_ix]["tracks"]["items"]
-                        ), mean(  # percentage of explicit tracks
-                            tracks["explicit"] for tracks in
-                            resp["albums"][group_ix]["tracks"]["items"]
+                eprint(self.table[group_ix])
+                if self.table[group_ix][-1]:
+                    self.table[group_ix] = (
+                        self.table[group_ix] + (
+                            ",".join(  # comma joined URIs
+                                tracks["uri"].replace("spotify:track:", '')
+                                for tracks in
+                                resp["albums"][group_ix]["tracks"]["items"]
+                            ), np.mean(  # percentage of explicit tracks
+                                np.array([
+                                    tracks["explicit"] for tracks in
+                                    resp["albums"][group_ix]["tracks"]["items"]
+                                ])
+                            )
                         )
                     )
-                )
+                else:
+                    self.table[group_ix] = (
+                        self.table[group_ix] + (None, 0.0)
+                    )
 
     def __stats(self, feats):
 
         stats = []
         for attr in FEATS:
-            stats.append(np.mean(resp[attr] for resp in feats))
-            stats.append(np.median(resp[attr] for resp in feats))
-            stats.append(np.min(resp[attr] for resp in feats))
-            stats.append(np.max(resp[attr] for resp in feats))
+            stats.append(np.mean(np.array([resp[attr] for resp in feats])))
+            stats.append(np.median(np.array([resp[attr] for resp in feats])))
+            stats.append(np.min(np.array([resp[attr] for resp in feats])))
+            stats.append(np.max(np.array([resp[attr] for resp in feats])))
 
         return tuple(stats)
 
     def get_tracks_analysis(self):
 
         iprint("Getting audio analysis on tracks")
-        track_uris = ",".join(i[4] for i in self.albums).split(",")
+        track_uris = ",".join(i[-2] for i in self.table if i[-2]).split(",")
 
         feats = []
         for uri_ix in range(0, len(track_uris), self.MAX_AUDIO_FEATS):
@@ -118,7 +130,17 @@ class SpotifyWrapper(object):
                 track_uris[uri_ix:uri_ix + self.MAX_AUDIO_FEATS]))
 
         uri_ix = 0
-        for album_ix in range(len(self.albums)):
-            n_albums = self.albums[album_ix][4].count(",") + 1
-            self.table.append(self.__stats(feats[uri_ix:uri_ix + n_albums]))
-            uri_ix += n_albums
+        for album_ix in range(len(self.table)):
+            album_uris = self.table[album_ix][-2]
+            if album_uris:
+                n_albums = album_uris.count(",") + 1
+                self.table[album_ix] = (
+                    self.table[album_ix] +
+                    self.__stats(feats[uri_ix:uri_ix + n_albums])
+                )
+                uri_ix += n_albums
+            else:
+                self.table[album_ix] = (
+                    self.table[album_ix] +
+                    (0.0,) * 4 * len(FEATS)
+                )

@@ -44,12 +44,10 @@ class DataBase(object):
 
         with self.con:
             if limit:
-                data = self.con.execute(
+                return self.con.execute(
                     "SELECT * FROM {} LIMIT {}".format(table, limit))
             else:
-                data = self.con.execute("SELECT * FROM {}".format(table))
-
-        return data.fetchall()
+                return self.con.execute("SELECT * FROM {}".format(table))
 
     def insert(self, table, data, fields=None):
 

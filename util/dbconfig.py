@@ -12,7 +12,7 @@ SPOTIFY_FIELDS = [
     ("artist", "TEXT"),
     ("album_uri", "TEXT"),
     ("tracklist_uri", "TEXT"),
-    ("explicit", "INTEGER"),
+    ("explicit", "REAL"),
 ]
 
 FEATURE_FIELDS = [

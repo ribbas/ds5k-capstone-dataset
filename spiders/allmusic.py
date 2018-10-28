@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# import datetime
 from dateutil import parser as date_parser
 import dateutil.relativedelta as relativedelta
 import dateutil.rrule as rrule

@@ -8,8 +8,8 @@ from termcolor import cprint
 
 def __arg_fmt(*args):
 
-    return ("{} | {} " * len(args)).format(
-        datetime.now().strftime('%H:%M:%S'), *args)
+    return datetime.now().strftime("%H:%M:%S | ") + \
+        ("{}" * len(args)).format(*args)
 
 
 def eprint(*ostream):
