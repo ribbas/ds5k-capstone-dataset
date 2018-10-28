@@ -120,7 +120,7 @@ if __name__ == '__main__':
     reviews = db.dump("reviews")
 
     test_data = []
-    for _ in range(5):
+    for _ in range(10):
         # print(reviews.fetchone()[1:3])
         test_data.append(reviews.fetchone())
 
@@ -128,4 +128,10 @@ if __name__ == '__main__':
     sp_obj.get_albums_uris()
     sp_obj.get_tracklists_uris()
     sp_obj.get_tracks_analysis()
-    pprint(sp_obj.get_table())
+    sp_data = sp_obj.get_table()
+
+    for row in sp_data:
+        print(row)
+
+    db.create("spotify", FEATURE_FIELDS)
+    db.insert("spotify", sp_data)
