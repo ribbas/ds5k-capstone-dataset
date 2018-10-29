@@ -119,7 +119,7 @@ if __name__ == '__main__':
     db = DataBase(DB_PATH)
     reviews = db.dump("reviews")
 
-    sp_obj = SpotifyWrapper(CREDS, reviews.fetchall()[1000:2000])
+    sp_obj = SpotifyWrapper(CREDS, reviews.fetchall()[5000:])
     sp_obj.get_albums_uris()
     sp_obj.get_tracklists_uris()
     sp_obj.get_tracks_analysis()
