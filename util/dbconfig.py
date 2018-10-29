@@ -12,6 +12,33 @@ ALBUM_FIELDS = [
     ("artist", "TEXT"),
 ]
 
+REVIEW_FIELDS = [
+    ("album_id", "INTEGER PRIMARY KEY"),
+    ("time", "TIMESTAMP"),
+    ("allmusic", "REAL"),
+    ("metacritic", "REAL"),
+    ("pitchfork", "REAL"),
+    ("score_mean", "REAL"),
+    ("score_std", "REAL"),
+    ("reviewers", "TEXT"),
+]
+
+
+GENRE_FIELDS = [
+    ("album_id", "INTEGER PRIMARY KEY"),
+    ("country", "INTEGER"),
+    ("classical", "INTEGER"),
+    ("electronic", "INTEGER"),
+    ("experimental", "INTEGER"),
+    ("folk", "INTEGER"),
+    ("hiphop", "INTEGER"),
+    ("international", "INTEGER"),
+    ("jazz", "INTEGER"),
+    ("metal", "INTEGER"),
+    ("pop", "INTEGER"),
+    ("rock", "INTEGER"),
+]
+
 FEATURE_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
     ("explicit", "REAL"),
@@ -66,35 +93,6 @@ FEATURE_FIELDS = [
     ("time_signature_med", "REAL"),
     ("time_signature_min", "REAL"),
     ("time_signature_max", "REAL"),
-]
-
-REVIEW_FIELDS = [
-    ("album_id", "INTEGER PRIMARY KEY"),
-    ("album", "TEXT"),
-    ("artist", "TEXT"),
-    ("time", "TIMESTAMP"),
-    ("allmusic", "REAL"),
-    ("metacritic", "REAL"),
-    ("pitchfork", "REAL"),
-    ("score_mean", "REAL"),
-    ("score_std", "REAL"),
-    ("reviewers", "TEXT"),
-]
-
-
-GENRE_FIELDS = [
-    ("album_id", "INTEGER PRIMARY KEY"),
-    ("country", "INTEGER"),
-    ("classical", "INTEGER"),
-    ("electronic", "INTEGER"),
-    ("experimental", "INTEGER"),
-    ("folk", "INTEGER"),
-    ("hiphop", "INTEGER"),
-    ("international", "INTEGER"),
-    ("jazz", "INTEGER"),
-    ("metal", "INTEGER"),
-    ("pop", "INTEGER"),
-    ("rock", "INTEGER"),
 ]
 
 IND_REVIEW_FIELDS = [

@@ -7,7 +7,7 @@ import numpy as np
 from spotify.secret import CREDS
 from spotify.spotify import SpotifyWrapper
 from util.dbmgmt import DataBase
-from util.dbconfig import DB_PATH, FEATURE_FIELDS, \
+from util.dbconfig import DB_PATH, ALBUM_FIELDS, \
     IND_REVIEW_FIELDS, REVIEW_FIELDS, GENRE_FIELDS
 from util.parsers import normalize_scores, get_earliest_date, get_genres, \
     get_reviewers
@@ -117,13 +117,15 @@ from pprint import pprint
 if __name__ == '__main__':
 
     db = DataBase(DB_PATH)
-    reviews = db.dump("reviews")
+    reviews = db.dump("reviews1")
+    reviews = [i[3:] for i in reviews.fetchall()]
+    print(reviews)
 
-    sp_obj = SpotifyWrapper(CREDS, reviews.fetchall()[3000:])
-    sp_obj.get_albums_uris()
-    sp_obj.get_tracklists_uris()
-    sp_obj.get_tracks_analysis()
-    sp_data = sp_obj.get_table()
+    # sp_obj = SpotifyWrapper(CREDS, reviews.fetchall())
+    # sp_obj.get_albums_uris()
+    # sp_obj.get_tracklists_uris()
+    # sp_obj.get_tracks_analysis()
+    # sp_data = sp_obj.get_table()
 
-    db.create("features", FEATURE_FIELDS)
-    db.insert("features", sp_data)
+    db.create("reviews", REVIEW_FIELDS)
+    db.insert("reviews", reviews)
