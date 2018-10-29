@@ -3,29 +3,17 @@
 
 from os import path
 
-DB_PATH = path.join(path.dirname(
-    path.dirname(path.abspath(__file__))), "data/db.sqlite3")
+DB_PATH = path.join(path.dirname(path.dirname(
+    path.abspath(__file__))), "data/db.sqlite3")
 
-SPOTIFY_FIELDS = [
+ALBUM_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
     ("album", "TEXT"),
     ("artist", "TEXT"),
-    ("album_uri", "TEXT"),
-    ("tracklist_uri", "TEXT"),
-    ("explicit", "REAL"),
 ]
 
 FEATURE_FIELDS = [
     ("album_id", "INTEGER PRIMARY KEY"),
-    ("album", "TEXT"),
-    ("artist", "TEXT"),
-    ("time", "TIMESTAMP"),
-    ("allmusic", "REAL"),
-    ("metacritic", "REAL"),
-    ("pitchfork", "REAL"),
-    ("score_mean", "REAL"),
-    ("score_std", "REAL"),
-    ("reviewers", "TEXT"),
     ("explicit", "REAL"),
     ("tracks_count", "REAL"),
     ("duration_mean", "REAL"),

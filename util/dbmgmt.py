@@ -20,10 +20,15 @@ class DataBase(object):
 
         iprint("Disconnected from '{}'".format(self.db_path))
 
-    def create(self, table, fields):
+    def create(self, table, fields, force=False):
 
-        iprint("Creating table '{}' with fields '{}'".format(table, fields))
         with self.con:
+
+            if force:
+                iprint("Dropping table '{}'".format(table))
+                self.con.execute("DROP TABLE IF EXISTS {}".format(table))
+
+            iprint("Creating table '{}' with fields '{}'".format(table, fields))
             try:
                 self.con.execute(
                     "CREATE TABLE IF NOT EXISTS {} ({})".format(

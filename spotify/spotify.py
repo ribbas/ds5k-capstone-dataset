@@ -40,7 +40,6 @@ class SpotifyWrapper(object):
 
         self.albums = albums
         self.table = []
-        self.data = []
 
     def get_table(self):
 
@@ -58,14 +57,14 @@ class SpotifyWrapper(object):
 
             if resp["total"]:
                 self.table.append(
-                    (album[1:] + (
+                    (album[10:] + (
                         resp["items"][0]["uri"].replace("spotify:album:", ''), )
                      )
                 )
                 sprint("Received response for: ", " by ".join(album[1:3]))
 
             else:
-                self.table.append((album[1:] + (None, )))
+                self.table.append((album[10:] + (None, )))
                 failed_resp += 1
                 wprint("No response for: ", " by ".join(album[1:3]))
 
@@ -161,7 +160,7 @@ class SpotifyWrapper(object):
         for uri_ix in range(0, len(track_uris), self.MAX_AUDIO_FEATS):
             feats.extend(self.sp.audio_features(
                 track_uris[uri_ix:uri_ix + self.MAX_AUDIO_FEATS]))
-            sprint("Audio features received for {} tracks".format(len(feats)))
+            sprint("Audio features received for {} tracklists".format(len(feats)))
 
         uri_ix = 0
         for album_ix in range(len(self.table)):
@@ -169,12 +168,12 @@ class SpotifyWrapper(object):
             if album_uris:
                 n_albums = album_uris.count(",") + 1
                 self.table[album_ix] = (
-                    self.table[album_ix][:10] +
+                    self.table[album_ix][2:] +
                     self.__stats(feats[uri_ix:uri_ix + n_albums])
-                ) + self.table[album_ix][12:]
+                )
                 uri_ix += n_albums
             else:
                 self.table[album_ix] = (
-                    self.table[album_ix][:10] +
+                    self.table[album_ix][2:] +
                     (np.NaN,) * 51
-                ) + self.table[album_ix][12:]
+                )
