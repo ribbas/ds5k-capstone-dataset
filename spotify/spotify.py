@@ -71,11 +71,11 @@ class SpotifyWrapper(object):
 
         if failed_resp:
             wprint("Responses received for {}/{} albums".format(
-                failed_resp, len(self.table))
+                len(self.table) - failed_resp, len(self.table))
             )
         else:
             iprint("Responses received for {}/{} albums".format(
-                failed_resp, len(self.table))
+                len(self.table) - failed_resp, len(self.table))
             )
 
     def get_tracklists_uris(self):
