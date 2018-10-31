@@ -5,7 +5,6 @@ import re
 
 import numpy as np
 
-from . import *
 from .genreconfig import *
 
 
@@ -20,12 +19,11 @@ def get_earliest_date(dates):
     return np.min(dates)
 
 
-def __clean_delims(_str):
-
-    return _str.lower().replace(" ", "")
-
-
 def get_genres(genres):
+
+    def __clean_delims(_str):
+
+        return _str.lower().replace(" ", "")
 
     genres = [
         __clean_delims(item)

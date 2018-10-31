@@ -55,4 +55,5 @@ __Features__
 
 _The following features are represented as a binary vector, where 1 represents presence of influences of the genre in the album_
 
-`< country, classical, electronic, experimental, folk, hiphop, international, jazz, metal, pop, rock >`
+|country|classical|electronic|experimental|folk|hiphop|international|jazz|metal|pop|rock|
+|-------|---------|----------|------------|----|------|-------------|----|-----|---|----|
